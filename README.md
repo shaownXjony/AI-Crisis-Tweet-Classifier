@@ -132,6 +132,10 @@ streamlit run app.py
 
 ---
 
+## 🌍 Live Demo
+🎯 Try it here: [AI-Crisis Tweet Classifier](https://ai-tweet-classifier-shaownxjony.streamlit.app/)
+
+
 ## 💾 Model Artifacts
 
 | File | Description |
