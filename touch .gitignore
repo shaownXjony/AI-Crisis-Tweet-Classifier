@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual envs
+.venv/
+venv/
+env/
+ENV/
+
+# Editor/IDE
+.vscode/
+.idea/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# System
+.DS_Store
+Thumbs.db
+
+# Data / model artifacts
+data/raw/
+data/processed/
+data/models/
+*.pkl
+*.joblib
+*.h5
+
+# Media artifacts
+demo.mp4
+*.mp4
+demo.gif
+*.gif
+
+# pytest / caches
+.pytest_cache/

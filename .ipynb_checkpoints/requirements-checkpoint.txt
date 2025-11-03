@@ -1,0 +1,12 @@
+streamlit
+scikit-learn
+pandas
+joblib
+numpy
+matplotlib
+seaborn
+wordcloud
+streamlit-folium
+folium
+tqdm
+pytest==8.3.3
