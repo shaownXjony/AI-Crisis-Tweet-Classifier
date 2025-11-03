@@ -81,7 +81,7 @@ Used **CalibratedClassifierCV** to convert SVM's raw decision function outputs i
 |---------------|-------------|
 | ![accuracy_chart](reports/eda_visuals/model_accuracy_comparison.png) | **Model Accuracy Comparison** |
 | ![confusion_matrix](reports/eda_visuals/confusion_matrix_linear_svm.png) | **Confusion Matrix — Linear SVM** |
-| ![feature_importance](reports/eda_visuals/top_features.png) | **Top TF-IDF Features per Class** |
+| ![feature_importance](reports/eda_visuals/top_features_informative.png) | **Top TF-IDF Features per Class** |
 
 ---
 
@@ -125,10 +125,10 @@ streamlit run app.py
 ### 🧭 App Preview
 
 #### 🔹 Single Tweet Example
-![single_tweet_demo](images/single_tweet_demo.png)
+![single_tweet_demo](images/imagessingle_tweet_demo.png)
 
 #### 🔹 Batch CSV Classification
-![batch_csv_demo](images/batch_csv_demo.png)
+![batch_csv_demo](imagesbatch_csv_demo.png)
 
 ---
 
