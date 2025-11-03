@@ -128,7 +128,7 @@ streamlit run app.py
 ![single_tweet_demo](images/imagessingle_tweet_demo.png)
 
 #### 🔹 Batch CSV Classification
-![batch_csv_demo](imagesbatch_csv_demo.png)
+![batch_csv_demo](images/imagesbatch_csv_demo.png)
 
 ---
 
