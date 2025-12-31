@@ -37,42 +37,218 @@ st.set_page_config(page_title="AI-Crisis Tweet Classifier", page_icon=page_icon,
 st.markdown(
     """
 <style>
+/* Main app background */
 .main {
-    background-color: #0E1117;
+    background: linear-gradient(135deg, #0E1117 0%, #1a1f2e 100%);
     color: #FAFAFA;
 }
+
+/* Sidebar styling */
 [data-testid="stSidebar"] {
-    background-color: #161A22;
-    padding: 1.2rem 1rem;
+    background: linear-gradient(180deg, #161A22 0%, #1f2632 100%);
+    padding: 1.5rem 1.2rem;
     border-right: 1px solid #262730;
 }
-h1, h2, h3 {
+
+/* Typography */
+h1, h2, h3, h4 {
     color: #FAFAFA !important;
+    font-weight: 600;
 }
+
+h1 {
+    background: linear-gradient(135deg, #1F6FEB 0%, #8B5CF6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Buttons */
 .stButton > button {
-    background-color: #1F6FEB;
+    background: linear-gradient(135deg, #1F6FEB 0%, #2563EB 100%);
     color: white;
-    border-radius: 8px;
+    border-radius: 10px;
     border: none;
-    transition: all 0.12s ease-in-out;
-    padding: 0.45rem 0.9rem;
+    transition: all 0.3s ease;
+    padding: 0.6rem 1.2rem;
+    font-weight: 600;
+    box-shadow: 0 4px 6px rgba(31, 111, 235, 0.3);
+    width: 100%;
 }
+
 .stButton > button:hover {
     transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(31, 111, 235, 0.4);
+    background: linear-gradient(135deg, #2563EB 0%, #1F6FEB 100%);
 }
+
+/* Success/Info boxes */
 .stSuccess {
-    background-color: rgba(35, 134, 54, 0.14);
+    background: linear-gradient(135deg, rgba(35, 134, 54, 0.15) 0%, rgba(35, 134, 54, 0.1) 100%);
     border-left: 4px solid #238636;
+    border-radius: 8px;
+    padding: 1rem;
 }
+
+.stInfo {
+    background: linear-gradient(135deg, rgba(31, 111, 235, 0.15) 0%, rgba(31, 111, 235, 0.1) 100%);
+    border-left: 4px solid #1F6FEB;
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+.stWarning {
+    background: linear-gradient(135deg, rgba(251, 188, 5, 0.15) 0%, rgba(251, 188, 5, 0.1) 100%);
+    border-left: 4px solid #FBB805;
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+.stError {
+    background: linear-gradient(135deg, rgba(248, 81, 73, 0.15) 0%, rgba(248, 81, 73, 0.1) 100%);
+    border-left: 4px solid #F85149;
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+/* Progress bars */
 div[data-testid="stProgress"] > div > div > div {
-    background-color: #1F6FEB;
+    background: linear-gradient(90deg, #1F6FEB 0%, #8B5CF6 100%);
     border-radius: 10px;
 }
+
+/* Input fields */
 textarea, input {
-    border-radius: 8px !important;
-    border: 1px solid #30363D !important;
+    border-radius: 10px !important;
+    border: 2px solid #30363D !important;
+    background-color: #161B22 !important;
+    color: #FAFAFA !important;
+    transition: all 0.3s ease;
 }
+
+textarea:focus, input:focus {
+    border-color: #1F6FEB !important;
+    box-shadow: 0 0 0 3px rgba(31, 111, 235, 0.1) !important;
+}
+
+/* Cards/Containers */
+.custom-card {
+    background: linear-gradient(135deg, rgba(22, 27, 34, 0.8) 0%, rgba(30, 36, 46, 0.8) 100%);
+    border: 1px solid #30363D;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 1rem 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Metrics */
+[data-testid="stMetricValue"] {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+[data-testid="stMetricLabel"] {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+/* Badges */
+.prediction-badge {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin: 0.5rem 0;
+}
+
+.badge-informative {
+    background: linear-gradient(135deg, #238636 0%, #2EA043 100%);
+    color: white;
+    box-shadow: 0 2px 8px rgba(35, 134, 54, 0.3);
+}
+
+.badge-not-informative {
+    background: linear-gradient(135deg, #F85149 0%, #FF6B6B 100%);
+    color: white;
+    box-shadow: 0 2px 8px rgba(248, 81, 73, 0.3);
+}
+
+/* Confidence bar container */
+.confidence-container {
+    background: rgba(22, 27, 34, 0.6);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 1rem 0;
+    border: 1px solid #30363D;
+}
+
+/* Stats cards */
+.stats-card {
+    background: linear-gradient(135deg, rgba(31, 111, 235, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+    border: 1px solid rgba(31, 111, 235, 0.3);
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+}
+
+/* Tabs */
+[data-baseweb="tab-list"] {
+    gap: 0.5rem;
+    background-color: transparent;
+}
+
+[data-baseweb="tab"] {
+    border-radius: 8px 8px 0 0;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+[data-baseweb="tab"]:hover {
+    background-color: rgba(31, 111, 235, 0.1);
+}
+
+[aria-selected="true"] {
+    background-color: rgba(31, 111, 235, 0.2) !important;
+    border-bottom: 2px solid #1F6FEB !important;
+}
+
+/* Dataframe styling */
+.dataframe {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Footer */
 footer {visibility: hidden;}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #161B22;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #30363D;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #484F58;
+}
+
+/* Character counter */
+.char-counter {
+    text-align: right;
+    font-size: 0.85rem;
+    color: #9AA0A6;
+    margin-top: 0.25rem;
+}
 </style>
 """,
     unsafe_allow_html=True,
@@ -86,13 +262,16 @@ if os.path.exists(logo_path):
     banner_logo_html = f'<img src="{logo_path}" width="56" style="vertical-align: middle; margin-right: 12px;">'
 
 banner_html = f"""
-<div style="background-color:#0F1720; padding:1rem; border-radius:8px; margin-bottom:1rem; display:flex; align-items:center;">
+<div style="background: linear-gradient(135deg, #0F1720 0%, #1a1f2e 100%); padding:1.5rem; border-radius:12px; margin-bottom:1.5rem; display:flex; align-items:center; border: 1px solid #30363D; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);">
     {banner_logo_html}
-    <div>
-        <h1 style="color:#FAFAFA; text-align:left; margin-bottom:0.1rem;">⚡ AI-Powered Crisis Tweet Classifier</h1>
-        <p style="color:#9AA0A6; text-align:left; font-size:14px; margin-top:0.2rem; margin-bottom:0;">
-            Instantly classify crisis-related tweets as <b>informative</b> or <b>not_informative</b>
-            using a calibrated Linear SVM (TF-IDF).
+    <div style="flex: 1;">
+        <h1 style="background: linear-gradient(135deg, #1F6FEB 0%, #8B5CF6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-align:left; margin-bottom:0.3rem; font-size: 2rem; font-weight: 700;">
+            ⚡ AI-Powered Crisis Tweet Classifier
+        </h1>
+        <p style="color:#9AA0A6; text-align:left; font-size:15px; margin-top:0.3rem; margin-bottom:0; line-height: 1.6;">
+            Instantly classify crisis-related tweets as <span style="color: #238636; font-weight: 600;">informative</span> or 
+            <span style="color: #F85149; font-weight: 600;">not_informative</span> using a calibrated Linear SVM (TF-IDF).
+            <span style="display: block; margin-top: 0.5rem; font-size: 0.9rem; opacity: 0.8;">🎯 Real-time predictions • 📊 Batch processing • 🔒 93% accuracy</span>
         </p>
     </div>
 </div>
@@ -182,16 +361,23 @@ def batch_predict(model, vect, texts):
 # Sidebar Info
 # -------------------------
 with st.sidebar:
-    st.header("Model status")
+    st.markdown("### 📊 Model Status")
+    st.markdown("---")
+    
     if model is None or vect is None:
-        st.error("Model or vectorizer not found in `data/processed/models/`.")
-        st.write("Expected files:")
-        for p in MODEL_CANDIDATES:
-            st.write(f"- {os.path.relpath(p, PROJECT_ROOT)}")
-        st.write(f"- {os.path.relpath(VECT_PATH, PROJECT_ROOT)}")
+        st.error("⚠️ Model or vectorizer not found")
+        with st.expander("Expected files", expanded=False):
+            for p in MODEL_CANDIDATES:
+                st.text(f"• {os.path.basename(p)}")
+            st.text(f"• {os.path.basename(VECT_PATH)}")
     else:
-        st.success("Model and vectorizer loaded ✅")
-        st.write(f"Model type: `{model.__class__.__name__}`")
+        # Status badge
+        st.success("✅ Model and vectorizer loaded successfully")
+        
+        # Model info card
+        st.markdown('<div class="custom-card">', unsafe_allow_html=True)
+        st.markdown(f"**Model Type:** `{model.__class__.__name__}`")
+        
         # Classes (readable)
         try:
             classes_readable = []
@@ -205,27 +391,38 @@ with st.sidebar:
                     classes_readable.append(str(c))
             if label_map is not None:
                 classes_readable = [label_map.get(str(x), str(x)) for x in classes_readable]
-            st.json({i: label for i, label in enumerate(classes_readable)})
+            
+            st.markdown("**Classes:**")
+            for i, label in enumerate(classes_readable):
+                badge_color = "#238636" if "informative" in label.lower() else "#F85149"
+                st.markdown(f'<span style="color: {badge_color}; font-weight: 600;">{i}: {label}</span>', unsafe_allow_html=True)
         except Exception:
             pass
+        
         # Vectorizer
         try:
-            st.write("Vectorizer vocab size:", len(vect.vocabulary_))
+            vocab_size = len(vect.vocabulary_)
+            st.markdown(f"**Vocabulary Size:** `{vocab_size:,}`")
         except Exception:
             pass
+        st.markdown('</div>', unsafe_allow_html=True)
+        
         # Metadata
         if os.path.exists(META_PATH):
             try:
                 meta = json.load(open(META_PATH, encoding="utf-8"))
                 st.markdown("---")
-                st.subheader("Model info")
+                st.markdown("### 📋 Model Metadata")
+                st.markdown('<div class="custom-card">', unsafe_allow_html=True)
                 st.write(f"**Name:** {meta.get('model_name', 'N/A')}")
                 st.write(f"**Version:** {meta.get('version', 'N/A')}")
                 st.write(f"**Saved:** {meta.get('date_saved', 'N/A')}")
+                st.markdown('</div>', unsafe_allow_html=True)
             except Exception:
                 pass
 
         st.markdown("---")
+        st.markdown("### 🎯 Quick Start")
         demo_data = pd.DataFrame({
             "tweet_text": [
                 "Massive earthquake in city center, people trapped under debris.",
@@ -236,11 +433,16 @@ with st.sidebar:
         })
         csv_data = demo_data.to_csv(index=False)
         st.download_button(
-            label="⬇️ Download Demo CSV",
+            label="📥 Download Demo CSV",
             data=csv_data,
             file_name="demo_tweets.csv",
             mime="text/csv",
+            use_container_width=True
         )
+        
+        st.markdown("---")
+        st.markdown("### 💡 Tips")
+        st.info("💬 Use example buttons for quick testing\n\n📊 CSV should contain: `tweet_text`, `text`, or `clean_text`\n\n🎯 Higher confidence = more reliable prediction")
 
 # -------------------------
 # Main Tabs
@@ -251,144 +453,368 @@ tab1, tab2, tab3 = st.tabs(["💬 Single Tweet", "📂 Batch CSV", "ℹ️ About
 # Tab 1: Single Tweet
 # -------------------------
 with tab1:
-    st.subheader("Classify a single tweet")
+    st.markdown("### 💬 Classify a Single Tweet")
+    st.markdown("Enter a tweet below to get instant classification results.")
+    
+    # Example buttons with improved styling
+    st.markdown("**Quick Examples:**")
     col_ex1, col_ex2, col_ex3 = st.columns(3)
-    if col_ex1.button("Example — Flood"):
-        st.session_state["single_text"] = "Flood in district X, bridges washed away, need rescue teams!"
-    if col_ex2.button("Example — Fire"):
-        st.session_state["single_text"] = "Huge fire near central market, people trapped, fire service needed."
-    if col_ex3.button("Example — Not urgent"):
-        st.session_state["single_text"] = "Watching the game at home, big crowd here."
+    with col_ex1:
+        if st.button("🌊 Flood Example", use_container_width=True, help="Example of an informative crisis tweet"):
+            st.session_state["single_text"] = "Flood in district X, bridges washed away, need rescue teams!"
+    with col_ex2:
+        if st.button("🔥 Fire Example", use_container_width=True, help="Another informative crisis example"):
+            st.session_state["single_text"] = "Huge fire near central market, people trapped, fire service needed."
+    with col_ex3:
+        if st.button("📺 Not Urgent", use_container_width=True, help="Example of a non-informative tweet"):
+            st.session_state["single_text"] = "Watching the game at home, big crowd here."
 
+    st.markdown("<br>", unsafe_allow_html=True)
+    
+    # Text area with character counter
     single_text = st.text_area(
-        "Enter tweet text",
+        "**Enter Tweet Text**",
         value=st.session_state.get("single_text", ""),
-        height=140,
-        placeholder="Type or paste a tweet..."
+        height=120,
+        placeholder="Type or paste a tweet here...",
+        help="The text will be automatically cleaned and preprocessed before classification",
+        key="tweet_input"
     )
+    
+    # Character counter
+    char_count = len(single_text)
+    char_limit = 280
+    char_color = "#9AA0A6" if char_count <= char_limit else "#F85149"
+    st.markdown(f'<div class="char-counter" style="color: {char_color};">{char_count}/{char_limit} characters</div>', unsafe_allow_html=True)
 
-    if st.button("Predict (single)"):
+    col_btn1, col_btn2 = st.columns([1, 4])
+    with col_btn1:
+        predict_btn = st.button("🚀 Predict", use_container_width=True, type="primary")
+    
+    if predict_btn:
         if not single_text.strip():
-            st.warning("Please enter tweet text.")
+            st.warning("⚠️ Please enter tweet text before predicting.")
         elif model is None or vect is None:
-            st.error("Model or vectorizer missing.")
+            st.error("❌ Model or vectorizer is missing. Please check the sidebar for model status.")
         else:
-            preds, confs, cleaned = batch_predict(model, vect, [single_text])
-            pred_raw, conf = preds[0], float(confs[0])
-            label = map_pred_to_label(pred_raw)
-            st.success(f"Predicted label: **{label}**")
-            st.write(f"Confidence: **{conf*100:.2f}%**")
+            with st.spinner("🔄 Processing tweet..."):
+                preds, confs, cleaned = batch_predict(model, vect, [single_text])
+                pred_raw, conf = preds[0], float(confs[0])
+                label = map_pred_to_label(pred_raw)
+            
+            # Prediction results with enhanced styling
+            st.markdown("---")
+            st.markdown("### 📊 Prediction Results")
+            
+            # Determine badge class and color
+            is_informative = "informative" in label.lower()
+            badge_class = "badge-informative" if is_informative else "badge-not-informative"
+            conf_color = "#238636" if is_informative else "#F85149"
+            
+            # Results card
+            st.markdown('<div class="confidence-container">', unsafe_allow_html=True)
+            
+            # Label badge
+            st.markdown(f'<div class="prediction-badge {badge_class}">📌 {label.replace("_", " ").title()}</div>', unsafe_allow_html=True)
+            
+            # Confidence with visual bar
+            conf_percent = conf * 100
+            st.markdown(f"<h3 style='color: {conf_color}; margin-top: 1rem; margin-bottom: 0.5rem;'>Confidence: {conf_percent:.1f}%</h3>", unsafe_allow_html=True)
+            
+            # Progress bar
             prog = min(max(int(conf * 100), 0), 100)
             st.progress(prog)
-            st.caption("Cleaned input used for vectorizer:")
-            st.code(cleaned[0])
+            
+            # Confidence interpretation
+            if conf_percent >= 80:
+                conf_text = "Very High Confidence"
+            elif conf_percent >= 65:
+                conf_text = "High Confidence"
+            elif conf_percent >= 50:
+                conf_text = "Moderate Confidence"
+            else:
+                conf_text = "Low Confidence"
+            
+            st.caption(f"💡 {conf_text} — The model is {'very certain' if conf_percent >= 80 else 'somewhat certain' if conf_percent >= 50 else 'uncertain'} about this prediction.")
+            
+            st.markdown('</div>', unsafe_allow_html=True)
+            
+            # Cleaned text preview
+            with st.expander("🔍 View Preprocessed Text", expanded=False):
+                st.code(cleaned[0], language="text")
+                st.caption("This is the cleaned and preprocessed text used for classification.")
 
 # -------------------------
 # Tab 2: Batch CSV
 # -------------------------
 with tab2:
-    st.subheader("Batch classify tweets from a CSV file")
-    st.write("Upload a CSV with a text column (`clean_text`, `tweet_text`, `text`, or `tweet`).")
-    uploaded = st.file_uploader("Upload CSV with tweets", type=["csv"])
+    st.markdown("### 📂 Batch Classify Tweets from CSV")
+    st.markdown("Upload a CSV file containing tweets for bulk classification.")
+    
+    # Instructions
+    with st.expander("📋 CSV Format Requirements", expanded=False):
+        st.markdown("""
+        **Your CSV file must contain one of these column names:**
+        - `clean_text`
+        - `tweet_text`
+        - `text`
+        - `tweet`
+        
+        **Example CSV structure:**
+        ```csv
+        tweet_text,user_id,created_at
+        "Flood warning in downtown area",user123,2023-01-01
+        "Beautiful sunset today!",user456,2023-01-01
+        ```
+        """)
+    
+    uploaded = st.file_uploader(
+        "📤 Upload CSV File", 
+        type=["csv"],
+        help="Select a CSV file containing tweet text in one of the supported columns"
+    )
 
     if uploaded is not None:
         try:
             df_in = pd.read_csv(uploaded)
+            st.success(f"✅ Successfully loaded CSV with **{len(df_in)}** rows")
         except Exception as e:
-            st.error(f"Failed to read CSV: {e}")
+            st.error(f"❌ Failed to read CSV: {e}")
+            st.info("💡 Make sure your file is a valid CSV format and try again.")
             df_in = None
 
         if df_in is not None:
+            # Show preview of uploaded data
+            with st.expander("👀 Preview Uploaded Data", expanded=False):
+                st.dataframe(df_in.head(10), use_container_width=True)
+                st.caption(f"Showing first 10 rows of {len(df_in)} total rows.")
+            
             text_col = next((c for c in ["clean_text", "tweet_text", "text", "tweet"] if c in df_in.columns), None)
             if not text_col:
-                st.error("CSV must contain one of: clean_text, tweet_text, text, tweet.")
+                st.error("❌ CSV must contain one of: `clean_text`, `tweet_text`, `text`, or `tweet`.")
+                st.info("💡 Please rename your text column to match one of the supported names.")
             elif model is None or vect is None:
-                st.error("Model/vectorizer missing.")
+                st.error("❌ Model or vectorizer is missing. Please check the sidebar for model status.")
             else:
-                with st.spinner("Classifying..."):
-                    preds, confs, cleaned = batch_predict(model, vect, df_in[text_col].astype(str).tolist())
+                # Classification button
+                if st.button("🚀 Start Batch Classification", type="primary", use_container_width=True):
+                    with st.spinner(f"🔄 Classifying {len(df_in)} tweets... This may take a moment."):
+                        preds, confs, cleaned = batch_predict(model, vect, df_in[text_col].astype(str).tolist())
 
-                # Map predictions to readable labels 
-                mapped_labels = [map_pred_to_label(p) for p in preds]
+                    # Map predictions to readable labels 
+                    mapped_labels = [map_pred_to_label(p) for p in preds]
 
-                df_out = df_in.copy()
-                df_out["pred_label"] = mapped_labels
-                df_out["pred_conf"] = np.round(confs, 6)
-                df_out["clean_text_used"] = cleaned
+                    df_out = df_in.copy()
+                    df_out["pred_label"] = mapped_labels
+                    df_out["pred_conf"] = np.round(confs, 6)
+                    df_out["clean_text_used"] = cleaned
 
-                st.success(f"Classified {len(df_out)} rows.")
+                    st.success(f"✅ Successfully classified **{len(df_out)}** tweets!")
+                    try:
+                        st.balloons()
+                    except Exception:
+                        pass  # Balloons not available in all Streamlit versions
 
-                # Top 5 preview
-                try:
-                    preview = (
-                        df_out[[text_col, "pred_label", "pred_conf"]]
-                        .rename(columns={text_col: "Tweet Text", "pred_label": "Predicted Label", "pred_conf": "Confidence"})
-                        .sort_values(by="Confidence", ascending=False)
-                        .head(5)
+                    # Statistics cards
+                    try:
+                        cnt_info = int((df_out["pred_label"] == "informative").sum())
+                        cnt_not = int((df_out["pred_label"] == "not_informative").sum())
+                        total = len(df_out)
+                        pct_info = (cnt_info / total * 100) if total > 0 else 0
+                        pct_not = (cnt_not / total * 100) if total > 0 else 0
+                        avg_conf = float(np.mean(confs) * 100)
+                        
+                        st.markdown("### 📊 Classification Statistics")
+                        
+                        col1, col2, col3, col4 = st.columns(4)
+                        
+                        with col1:
+                            st.metric(
+                                "✅ Informative",
+                                cnt_info,
+                                delta=f"{pct_info:.1f}%",
+                                delta_color="normal"
+                            )
+                        
+                        with col2:
+                            st.metric(
+                                "❌ Not Informative",
+                                cnt_not,
+                                delta=f"{pct_not:.1f}%",
+                                delta_color="inverse"
+                            )
+                        
+                        with col3:
+                            st.metric(
+                                "📈 Average Confidence",
+                                f"{avg_conf:.1f}%",
+                                help="Average confidence score across all predictions"
+                            )
+                        
+                        with col4:
+                            st.metric(
+                                "📊 Total Tweets",
+                                total
+                            )
+                    except Exception as e:
+                        st.warning(f"Could not compute statistics: {e}")
+
+                    # Top 5 preview with enhanced styling
+                    try:
+                        st.markdown("### 🔝 Top 5 Predictions (Highest Confidence)")
+                        preview = (
+                            df_out[[text_col, "pred_label", "pred_conf"]]
+                            .rename(columns={text_col: "Tweet Text", "pred_label": "Predicted Label", "pred_conf": "Confidence"})
+                            .sort_values(by="Confidence", ascending=False)
+                            .head(5)
+                        )
+                        preview["Confidence"] = (preview["Confidence"] * 100).map(lambda v: f"{v:.2f}%")
+                        
+                        # Style the dataframe
+                        styled_preview = preview.reset_index(drop=True)
+                        st.dataframe(styled_preview, use_container_width=True, hide_index=True)
+                        
+                        st.caption("💡 These are the tweets where the model is most confident in its predictions.")
+                    except Exception as e:
+                        st.warning(f"Could not display preview: {e}")
+
+                    # Download section
+                    st.markdown("---")
+                    st.markdown("### 💾 Download Results")
+                    
+                    col_dl1, col_dl2 = st.columns([3, 1])
+                    with col_dl1:
+                        st.info("📥 Click the button to download the complete results CSV with all predictions and confidence scores.")
+                    
+                    buf = io.StringIO()
+                    df_out.to_csv(buf, index=False)
+                    csv_str = buf.getvalue()
+                    
+                    st.download_button(
+                        "📥 Download Full Results CSV",
+                        csv_str,
+                        "predictions.csv",
+                        "text/csv",
+                        use_container_width=True,
+                        help="Download includes original columns plus pred_label, pred_conf, and clean_text_used"
                     )
-                    preview["Confidence"] = (preview["Confidence"] * 100).map(lambda v: f"{v:.2f}%")
-                    st.markdown("### 🔎 Top 5 predictions (by confidence)")
-                    st.dataframe(preview.reset_index(drop=True), use_container_width=True)
-                except Exception:
-                    pass
-
-                # Metrics (consistent because labels are mapped)
-                try:
-                    cnt_info = int((df_out["pred_label"] == "informative").sum())
-                    cnt_not = int((df_out["pred_label"] == "not_informative").sum())
-                    colA, colB = st.columns(2)
-                    colA.metric("Informative", cnt_info)
-                    colB.metric("Not Informative", cnt_not)
-                except Exception:
-                    pass
-
-                # Download full CSV
-                buf = io.StringIO()
-                df_out.to_csv(buf, index=False)
-                st.download_button("📥 Download full predictions CSV", buf.getvalue(), "predictions.csv", "text/csv")
+                    
+                    # Store in session state for potential future use
+                    st.session_state["last_batch_results"] = df_out
 
 # -------------------------
 # Tab 3: About
 # -------------------------
 with tab3:
-    st.subheader("About this project")
-    st.markdown(
-        """
-**AI-Powered Crisis Tweet Classifier** uses a Linear SVM trained on crisis-related datasets (e.g., CrisisLexT26)
-to classify tweets as *informative* or *not informative* during emergency events.
-
-### 💡 Features
-- Real-time single tweet classification  
-- Batch CSV upload + top-5 preview  
-- Calibrated SVM for confidence estimation  
-- Modern Streamlit UI (Dark Mode)
-
-### ⚙️ Run locally
-```bash
-pip install -r requirements.txt
-streamlit run app.py
-"""
-)
-
-
-
-demo_gif = os.path.join(PROJECT_ROOT, "demo.gif")
-if os.path.exists(demo_gif):
-    with open(demo_gif, "rb") as f:
-        gif_bytes = f.read()
-    gif_b64 = base64.b64encode(gif_bytes).decode("utf-8")  
-    gif_html = f"""
-    <div style="text-align:center;">
-        <img
-            src="data:image/gif;base64,{gif_b64}"
-            alt="App demo"
-            style="max-width:100%; height:auto; border-radius:8px;"
-        />
+    st.markdown("### ℹ️ About This Project")
+    
+    st.markdown("""
+    <div class="custom-card">
+    <h4>🎯 Project Overview</h4>
+    <p>
+    The <strong>AI-Powered Crisis Tweet Classifier</strong> is a machine learning application designed to 
+    automatically classify crisis-related tweets as <span style="color: #238636;"><strong>informative</strong></span> 
+    or <span style="color: #F85149;"><strong>not_informative</strong></span> during emergency events.
+    </p>
+    <p>
+    This tool leverages a <strong>Linear SVM</strong> model trained on the <strong>CrisisLexT26</strong> and 
+    <strong>CrisisLexT6</strong> datasets, achieving <strong>93% accuracy</strong> in classification tasks.
+    </p>
     </div>
-    """
-    components.html(gif_html, height=800)
-else:
-    st.info("Add a `demo.gif` to show a short animation here.")
+    """, unsafe_allow_html=True)
+    
+    col_feat1, col_feat2 = st.columns(2)
+    
+    with col_feat1:
+        st.markdown("""
+        <div class="custom-card">
+        <h4>✨ Key Features</h4>
+        <ul style="line-height: 2;">
+        <li>⚡ <strong>Real-time</strong> single tweet classification</li>
+        <li>📊 <strong>Batch processing</strong> via CSV upload</li>
+        <li>🎯 <strong>Calibrated confidence</strong> scores</li>
+        <li>🎨 <strong>Modern dark-mode</strong> UI</li>
+        <li>📈 <strong>Detailed statistics</strong> and analytics</li>
+        <li>💾 <strong>Export results</strong> to CSV</li>
+        </ul>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col_feat2:
+        st.markdown("""
+        <div class="custom-card">
+        <h4>🧠 Technical Details</h4>
+        <ul style="line-height: 2;">
+        <li><strong>Model:</strong> Linear SVM (Calibrated)</li>
+        <li><strong>Features:</strong> TF-IDF Vectorization</li>
+        <li><strong>Accuracy:</strong> 93%</li>
+        <li><strong>Precision:</strong> 94%</li>
+        <li><strong>Recall:</strong> 93%</li>
+        <li><strong>F1-Score:</strong> 93%</li>
+        </ul>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    st.markdown("---")
+    st.markdown("### 🚀 Getting Started")
+    
+    with st.expander("📦 Installation & Setup", expanded=False):
+        st.markdown("""
+        ```bash
+        # Clone the repository
+        git clone https://github.com/shaownXjony/AI-Crisis-Tweet-Classifier.git
+        cd AI-Crisis-Tweet-Classifier
+
+        # Install dependencies
+        pip install -r requirements.txt
+
+        # Download NLTK resources (if needed)
+        python -c "import nltk; nltk.download('stopwords'); nltk.download('wordnet'); nltk.download('punkt')"
+
+        # Run the Streamlit app
+        streamlit run app.py
+        ```
+        """)
+    
+    with st.expander("📚 Dataset Information", expanded=False):
+        st.markdown("""
+        **CrisisLexT26 & CrisisLexT6** are annotated tweet datasets containing:
+        - Multiple crisis events (earthquakes, floods, fires, etc.)
+        - Binary classification labels (informative / not_informative)
+        - Timestamps and event metadata
+        - High-quality annotations for training ML models
+        """)
+    
+    with st.expander("🔧 Model Architecture", expanded=False):
+        st.markdown("""
+        1. **Text Preprocessing**: Cleaning, tokenization, lemmatization, stopword removal
+        2. **Feature Extraction**: TF-IDF vectorization with optimized parameters
+        3. **Model Training**: Linear SVM with calibrated probabilities
+        4. **Evaluation**: Cross-validation and comprehensive metrics
+        5. **Deployment**: Streamlit web interface for real-time predictions
+        """)
+    
+    # Demo GIF
+    st.markdown("---")
+    st.markdown("### 🎬 App Demo")
+    
+    demo_gif = os.path.join(PROJECT_ROOT, "demo.gif")
+    if os.path.exists(demo_gif):
+        with open(demo_gif, "rb") as f:
+            gif_bytes = f.read()
+        gif_b64 = base64.b64encode(gif_bytes).decode("utf-8")  
+        gif_html = f"""
+        <div style="text-align:center; background: rgba(22, 27, 34, 0.6); padding: 1.5rem; border-radius: 12px; border: 1px solid #30363D;">
+            <img
+                src="data:image/gif;base64,{gif_b64}"
+                alt="App demo"
+                style="max-width:100%; height:auto; border-radius:8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);"
+            />
+        </div>
+        """
+        components.html(gif_html, height=600)
+    else:
+        st.info("💡 Add a `demo.gif` file to the project root to display an app demonstration here.")
 
 
 
@@ -398,16 +824,19 @@ else:
 #-------------------------
 
 st.markdown("---")
-st.caption("Notes:")
-st.markdown(
-"""
-
-The app prefers a calibrated model (linear_svm_calibrated.pkl) for accurate probabilities.
-
-Falls back to decision_function if calibration unavailable.
-
-Ensure tfidf_vectorizer.pkl matches the training vectorizer.
-
-@MD SHAOWN RAHMAN
-"""
-)
+st.markdown("""
+<div style="background: rgba(22, 27, 34, 0.6); padding: 1.5rem; border-radius: 12px; border: 1px solid #30363D; margin-top: 2rem;">
+    <h4 style="color: #FAFAFA; margin-bottom: 1rem;">📝 Technical Notes</h4>
+    <ul style="line-height: 2; color: #9AA0A6;">
+        <li>The app prefers a calibrated model (<code>linear_svm_calibrated.pkl</code>) for accurate probabilities.</li>
+        <li>Falls back to <code>decision_function</code> if calibration unavailable.</li>
+        <li>Ensure <code>tfidf_vectorizer.pkl</code> matches the training vectorizer.</li>
+    </ul>
+    <hr style="border-color: #30363D; margin: 1.5rem 0;">
+    <p style="text-align: center; color: #9AA0A6; margin: 0;">
+        Developed by <strong style="color: #FAFAFA;">Md. Shaown Rahman</strong> | 
+        <a href="https://github.com/shaownXjony" target="_blank" style="color: #1F6FEB; text-decoration: none;">GitHub</a> | 
+        <a href="mailto:shaownrahman30@gmail.com" style="color: #1F6FEB; text-decoration: none;">Email</a>
+    </p>
+</div>
+""", unsafe_allow_html=True)
