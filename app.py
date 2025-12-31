@@ -46,7 +46,7 @@ st.markdown(
 /* Sidebar styling */
 [data-testid="stSidebar"] {
     background: linear-gradient(180deg, #161A22 0%, #1f2632 100%);
-    padding: 1.5rem 1.2rem;
+    padding: 1rem 0.8rem;
     border-right: 1px solid #262730;
 }
 
@@ -54,6 +54,8 @@ st.markdown(
 h1, h2, h3, h4 {
     color: #FAFAFA !important;
     font-weight: 600;
+    margin-top: 0.5rem !important;
+    margin-bottom: 0.5rem !important;
 }
 
 h1 {
@@ -136,8 +138,8 @@ textarea:focus, input:focus {
     background: linear-gradient(135deg, rgba(22, 27, 34, 0.8) 0%, rgba(30, 36, 46, 0.8) 100%);
     border: 1px solid #30363D;
     border-radius: 12px;
-    padding: 1.5rem;
-    margin: 1rem 0;
+    padding: 1rem;
+    margin: 0.5rem 0;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
@@ -194,13 +196,14 @@ textarea:focus, input:focus {
 
 /* Tabs */
 [data-baseweb="tab-list"] {
-    gap: 0.5rem;
+    gap: 0.3rem;
     background-color: transparent;
+    margin-bottom: 0.5rem;
 }
 
 [data-baseweb="tab"] {
     border-radius: 8px 8px 0 0;
-    padding: 0.75rem 1.5rem;
+    padding: 0.5rem 1rem;
     font-weight: 600;
     transition: all 0.3s ease;
 }
@@ -255,29 +258,18 @@ footer {visibility: hidden;}
 )
 
 # -------------------------
-# Header Banner (render with components.html)
+# Hero Text
 # -------------------------
-banner_logo_html = ""
-if os.path.exists(logo_path):
-    banner_logo_html = f'<img src="{logo_path}" width="56" style="vertical-align: middle; margin-right: 12px;">'
-
-banner_html = f"""
-<div style="background: linear-gradient(135deg, #0F1720 0%, #1a1f2e 100%); padding:1.5rem; border-radius:12px; margin-bottom:1.5rem; display:flex; align-items:center; border: 1px solid #30363D; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);">
-    {banner_logo_html}
-    <div style="flex: 1;">
-        <h1 style="background: linear-gradient(135deg, #1F6FEB 0%, #8B5CF6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-align:left; margin-bottom:0.3rem; font-size: 2rem; font-weight: 700;">
-            ⚡ AI-Powered Crisis Tweet Classifier
-        </h1>
-        <p style="color:#9AA0A6; text-align:left; font-size:15px; margin-top:0.3rem; margin-bottom:0; line-height: 1.6;">
-            Instantly classify crisis-related tweets as <span style="color: #238636; font-weight: 600;">informative</span> or 
-            <span style="color: #F85149; font-weight: 600;">not_informative</span> using a calibrated Linear SVM (TF-IDF).
-            <span style="display: block; margin-top: 0.5rem; font-size: 0.9rem; opacity: 0.8;">🎯 Real-time predictions • 📊 Batch processing • 🔒 93% accuracy</span>
-        </p>
-    </div>
+st.markdown("""
+<div style="text-align: center; padding: 1rem 0 1.5rem 0;">
+    <h1 style="font-size: 2.5rem; margin-bottom: 0.5rem; background: linear-gradient(135deg, #1F6FEB 0%, #8B5CF6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+        ⚡ AI-Crisis Tweet Classifier
+    </h1>
+    <p style="color: #9AA0A6; font-size: 1rem; margin-top: 0;">
+        Classify crisis-related tweets as informative or not_informative using ML
+    </p>
 </div>
-"""
-
-components.html(banner_html, height=120)
+""", unsafe_allow_html=True)
 
 # -------------------------
 # Model Loading (cached)
@@ -453,44 +445,57 @@ tab1, tab2, tab3 = st.tabs(["💬 Single Tweet", "📂 Batch CSV", "ℹ️ About
 # Tab 1: Single Tweet
 # -------------------------
 with tab1:
-    st.markdown("### 💬 Classify a Single Tweet")
-    st.markdown("Enter a tweet below to get instant classification results.")
+    # Initialize session state if not present
+    if "single_text" not in st.session_state:
+        st.session_state["single_text"] = ""
     
-    # Example buttons with improved styling
-    st.markdown("**Quick Examples:**")
-    col_ex1, col_ex2, col_ex3 = st.columns(3)
-    with col_ex1:
-        if st.button("🌊 Flood Example", use_container_width=True, help="Example of an informative crisis tweet"):
-            st.session_state["single_text"] = "Flood in district X, bridges washed away, need rescue teams!"
-    with col_ex2:
-        if st.button("🔥 Fire Example", use_container_width=True, help="Another informative crisis example"):
-            st.session_state["single_text"] = "Huge fire near central market, people trapped, fire service needed."
-    with col_ex3:
-        if st.button("📺 Not Urgent", use_container_width=True, help="Example of a non-informative tweet"):
-            st.session_state["single_text"] = "Watching the game at home, big crowd here."
-
-    st.markdown("<br>", unsafe_allow_html=True)
+    # Example texts
+    example_texts = {
+        "flood": "Flood in district X, bridges washed away, need rescue teams!",
+        "fire": "Huge fire near central market, people trapped, fire service needed.",
+        "not_urgent": "Watching the game at home, big crowd here."
+    }
     
-    # Text area with character counter
-    single_text = st.text_area(
-        "**Enter Tweet Text**",
-        value=st.session_state.get("single_text", ""),
-        height=120,
-        placeholder="Type or paste a tweet here...",
-        help="The text will be automatically cleaned and preprocessed before classification",
-        key="tweet_input"
-    )
+    # Compact layout - text area and example buttons side by side
+    col_left, col_right = st.columns([2, 1])
     
-    # Character counter
-    char_count = len(single_text)
-    char_limit = 280
-    char_color = "#9AA0A6" if char_count <= char_limit else "#F85149"
-    st.markdown(f'<div class="char-counter" style="color: {char_color};">{char_count}/{char_limit} characters</div>', unsafe_allow_html=True)
-
-    col_btn1, col_btn2 = st.columns([1, 4])
-    with col_btn1:
-        predict_btn = st.button("🚀 Predict", use_container_width=True, type="primary")
+    with col_left:
+        # Text area with character counter
+        # Don't use key to avoid session state modification conflicts
+        single_text = st.text_area(
+            "**Enter Tweet Text**",
+            value=st.session_state.get("single_text", ""),
+            height=100,
+            placeholder="Type or paste a tweet here...",
+            help="The text will be automatically cleaned and preprocessed before classification"
+        )
+        
+        # Update session state when text changes
+        st.session_state["single_text"] = single_text
+        
+        # Character counter and predict button in same row
+        col_char, col_btn = st.columns([3, 1])
+        with col_char:
+            char_count = len(single_text)
+            char_limit = 280
+            char_color = "#9AA0A6" if char_count <= char_limit else "#F85149"
+            st.markdown(f'<div class="char-counter" style="color: {char_color}; margin-top: -10px;">{char_count}/{char_limit} characters</div>', unsafe_allow_html=True)
+        with col_btn:
+            predict_btn = st.button("🚀 Predict", use_container_width=True, type="primary")
     
+    with col_right:
+        st.markdown("**Quick Examples:**")
+        if st.button("🌊 Flood", use_container_width=True, help="Example of an informative crisis tweet", key="btn_flood"):
+            st.session_state["single_text"] = example_texts["flood"]
+            st.rerun()
+        if st.button("🔥 Fire", use_container_width=True, help="Another informative crisis example", key="btn_fire"):
+            st.session_state["single_text"] = example_texts["fire"]
+            st.rerun()
+        if st.button("📺 Not Urgent", use_container_width=True, help="Example of a non-informative tweet", key="btn_not_urgent"):
+            st.session_state["single_text"] = example_texts["not_urgent"]
+            st.rerun()
+    
+    # Prediction logic
     if predict_btn:
         if not single_text.strip():
             st.warning("⚠️ Please enter tweet text before predicting.")
@@ -502,77 +507,63 @@ with tab1:
                 pred_raw, conf = preds[0], float(confs[0])
                 label = map_pred_to_label(pred_raw)
             
-            # Prediction results with enhanced styling
+            # Prediction results - compact layout
             st.markdown("---")
-            st.markdown("### 📊 Prediction Results")
             
-            # Determine badge class and color
-            is_informative = "informative" in label.lower()
-            badge_class = "badge-informative" if is_informative else "badge-not-informative"
-            conf_color = "#238636" if is_informative else "#F85149"
+            # Compact results in columns
+            col_result1, col_result2 = st.columns([2, 1])
             
-            # Results card
-            st.markdown('<div class="confidence-container">', unsafe_allow_html=True)
+            with col_result1:
+                # Determine badge class and color
+                is_informative = "informative" in label.lower()
+                badge_class = "badge-informative" if is_informative else "badge-not-informative"
+                conf_color = "#238636" if is_informative else "#F85149"
+                
+                # Label badge
+                st.markdown(f'<div class="prediction-badge {badge_class}" style="margin-bottom: 0.5rem;">📌 {label.replace("_", " ").title()}</div>', unsafe_allow_html=True)
+                
+                # Progress bar
+                conf_percent = conf * 100
+                prog = min(max(int(conf * 100), 0), 100)
+                st.progress(prog)
+                st.caption(f"Confidence: **{conf_percent:.1f}%**")
             
-            # Label badge
-            st.markdown(f'<div class="prediction-badge {badge_class}">📌 {label.replace("_", " ").title()}</div>', unsafe_allow_html=True)
-            
-            # Confidence with visual bar
-            conf_percent = conf * 100
-            st.markdown(f"<h3 style='color: {conf_color}; margin-top: 1rem; margin-bottom: 0.5rem;'>Confidence: {conf_percent:.1f}%</h3>", unsafe_allow_html=True)
-            
-            # Progress bar
-            prog = min(max(int(conf * 100), 0), 100)
-            st.progress(prog)
-            
-            # Confidence interpretation
-            if conf_percent >= 80:
-                conf_text = "Very High Confidence"
-            elif conf_percent >= 65:
-                conf_text = "High Confidence"
-            elif conf_percent >= 50:
-                conf_text = "Moderate Confidence"
-            else:
-                conf_text = "Low Confidence"
-            
-            st.caption(f"💡 {conf_text} — The model is {'very certain' if conf_percent >= 80 else 'somewhat certain' if conf_percent >= 50 else 'uncertain'} about this prediction.")
-            
-            st.markdown('</div>', unsafe_allow_html=True)
+            with col_result2:
+                if conf_percent >= 80:
+                    conf_text = "Very High"
+                elif conf_percent >= 65:
+                    conf_text = "High"
+                elif conf_percent >= 50:
+                    conf_text = "Moderate"
+                else:
+                    conf_text = "Low"
+                st.markdown(f"<div style='padding: 1rem; background: rgba(31, 111, 235, 0.1); border-radius: 8px; text-align: center;'><strong style='color: {conf_color};'>{conf_text} Confidence</strong></div>", unsafe_allow_html=True)
             
             # Cleaned text preview
             with st.expander("🔍 View Preprocessed Text", expanded=False):
                 st.code(cleaned[0], language="text")
-                st.caption("This is the cleaned and preprocessed text used for classification.")
 
 # -------------------------
 # Tab 2: Batch CSV
 # -------------------------
 with tab2:
-    st.markdown("### 📂 Batch Classify Tweets from CSV")
-    st.markdown("Upload a CSV file containing tweets for bulk classification.")
-    
-    # Instructions
-    with st.expander("📋 CSV Format Requirements", expanded=False):
-        st.markdown("""
-        **Your CSV file must contain one of these column names:**
-        - `clean_text`
-        - `tweet_text`
-        - `text`
-        - `tweet`
-        
-        **Example CSV structure:**
-        ```csv
-        tweet_text,user_id,created_at
-        "Flood warning in downtown area",user123,2023-01-01
-        "Beautiful sunset today!",user456,2023-01-01
-        ```
-        """)
-    
-    uploaded = st.file_uploader(
-        "📤 Upload CSV File", 
-        type=["csv"],
-        help="Select a CSV file containing tweet text in one of the supported columns"
-    )
+    # Compact header with file uploader and format info
+    col_batch1, col_batch2 = st.columns([3, 1])
+    with col_batch1:
+        uploaded = st.file_uploader(
+            "📤 Upload CSV File", 
+            type=["csv"],
+            help="Select a CSV file containing tweet text in one of the supported columns"
+        )
+    with col_batch2:
+        with st.expander("📋 Format", expanded=False):
+            st.markdown("""
+            **Required columns:**
+            - `clean_text`
+            - `tweet_text`
+            - `text`
+            - `tweet`
+            """)
 
     if uploaded is not None:
         try:
@@ -615,7 +606,7 @@ with tab2:
                     except Exception:
                         pass  # Balloons not available in all Streamlit versions
 
-                    # Statistics cards
+                    # Statistics cards - compact
                     try:
                         cnt_info = int((df_out["pred_label"] == "informative").sum())
                         cnt_not = int((df_out["pred_label"] == "not_informative").sum())
@@ -623,8 +614,6 @@ with tab2:
                         pct_info = (cnt_info / total * 100) if total > 0 else 0
                         pct_not = (cnt_not / total * 100) if total > 0 else 0
                         avg_conf = float(np.mean(confs) * 100)
-                        
-                        st.markdown("### 📊 Classification Statistics")
                         
                         col1, col2, col3, col4 = st.columns(4)
                         
@@ -659,9 +648,8 @@ with tab2:
                     except Exception as e:
                         st.warning(f"Could not compute statistics: {e}")
 
-                    # Top 5 preview with enhanced styling
+                    # Top 5 preview - compact
                     try:
-                        st.markdown("### 🔝 Top 5 Predictions (Highest Confidence)")
                         preview = (
                             df_out[[text_col, "pred_label", "pred_conf"]]
                             .rename(columns={text_col: "Tweet Text", "pred_label": "Predicted Label", "pred_conf": "Confidence"})
@@ -670,22 +658,12 @@ with tab2:
                         )
                         preview["Confidence"] = (preview["Confidence"] * 100).map(lambda v: f"{v:.2f}%")
                         
-                        # Style the dataframe
-                        styled_preview = preview.reset_index(drop=True)
-                        st.dataframe(styled_preview, use_container_width=True, hide_index=True)
-                        
-                        st.caption("💡 These are the tweets where the model is most confident in its predictions.")
+                        with st.expander("🔝 Top 5 Predictions (Highest Confidence)", expanded=True):
+                            st.dataframe(preview.reset_index(drop=True), use_container_width=True, hide_index=True)
                     except Exception as e:
                         st.warning(f"Could not display preview: {e}")
 
-                    # Download section
-                    st.markdown("---")
-                    st.markdown("### 💾 Download Results")
-                    
-                    col_dl1, col_dl2 = st.columns([3, 1])
-                    with col_dl1:
-                        st.info("📥 Click the button to download the complete results CSV with all predictions and confidence scores.")
-                    
+                    # Download section - compact
                     buf = io.StringIO()
                     df_out.to_csv(buf, index=False)
                     csv_str = buf.getvalue()
